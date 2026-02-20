@@ -564,8 +564,10 @@ enum UpdaterSource : Equatable {
 
 
 private func resetUpdater() {
-    
+    // Update checking disabled for custom builds - code commented out but preserved for future use
     #if !GITHUB
+        // Disabled: Automatic update checking
+        /*
         let update:()->Void = {
             let url = Bundle.main.infoDictionary!["SUFeedURL"] as! String
             let state = stateValue.with { $0.loadingState }
@@ -577,7 +579,6 @@ private func resetUpdater() {
             }
         }
     
-    
         let signal: Signal<Never, NoError> = Signal { subscriber in
             update()
             subscriber.putCompletion()
@@ -586,14 +587,15 @@ private func resetUpdater() {
         disposable.set(signal.start())
     
         update()
+        */
     #endif
-    
-   
 }
 
 private var updaterSource: UpdaterSource? = nil
 
 func updater_resetWithUpdaterSource(_ source: UpdaterSource, force: Bool = true) {
+    // Update checking disabled for custom builds - code commented out but preserved for future use
+    /*
     let state = stateValue.with { $0 }
     switch state.loadingState {
     case .readyToInstall:
@@ -616,10 +618,14 @@ func updater_resetWithUpdaterSource(_ source: UpdaterSource, force: Bool = true)
         }
         resetUpdater()
     }
+    */
+    return
 }
 
 
 private func trySwitchUpdaterBetweenSources() {
+    // Update checking disabled for custom builds - code commented out but preserved for future use
+    /*
     if let source = updaterSource {
         switch source {
         case let .external(context):
@@ -632,6 +638,8 @@ private func trySwitchUpdaterBetweenSources() {
             updater_resetWithUpdaterSource(.external(context: context), force: false)
         }
     }
+    */
+    return
 }
 
 #endif

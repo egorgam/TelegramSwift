@@ -1109,10 +1109,15 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
                                     applicationUpdateUrlPrefix = nil
                                 }
                                 setAppUpdaterBaseDomain(applicationUpdateUrlPrefix)
+                                // Update checking disabled for custom builds - code commented out but preserved for future use
                                 #if STABLE || BETA || DEBUG
+                                /*
                                 updater_resetWithUpdaterSource(.internal(context: context.context))
+                                */
                                 #else
+                                /*
                                 updater_resetWithUpdaterSource(.external(context: context.context))
+                                */
                                 #endif
                                 
                             }))
@@ -1175,14 +1180,19 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
                                             applicationUpdateUrlPrefix = nil
                                         }
                                         setAppUpdaterBaseDomain(applicationUpdateUrlPrefix)
+                                        // Update checking disabled for custom builds - code commented out but preserved for future use
                                         #if STABLE
+                                        /*
                                         if let context = self.contextValue?.context {
                                             updater_resetWithUpdaterSource(.internal(context: context))
                                         } else {
                                             updater_resetWithUpdaterSource(.external(context: nil))
                                         }
+                                        */
                                         #else
+                                        /*
                                         updater_resetWithUpdaterSource(.external(context: self.contextValue?.context))
+                                        */
                                         #endif
                                         
                                     }))
@@ -1288,7 +1298,9 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
 
 
     @IBAction func checkForUpdates(_ sender: Any) {
+        // Update checking disabled for custom builds - code commented out but preserved for future use
         #if !APP_STORE
+            /*
             showModal(with: InputDataModalController(AppUpdateViewController()), for: window)
             #if STABLE
                 if let context = self.contextValue?.context {
@@ -1299,6 +1311,7 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
             #else
                 updater_resetWithUpdaterSource(.external(context: self.contextValue?.context))
             #endif
+            */
         #endif
     }
     
@@ -1312,8 +1325,11 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
     
     
     @objc func checkUpdates() {
+        // Update checking disabled for custom builds - code commented out but preserved for future use
         #if !APP_STORE
+        /*
         showModal(with: InputDataModalController(AppUpdateViewController()), for: window)
+        */
         #endif
     }
     
