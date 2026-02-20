@@ -216,7 +216,8 @@ struct PeerListState : Equatable {
                     if state.hasDownloads {
                         list.append(.downloads)
                     }
-                    list.append(.channels)
+                    // Закомментировано: убрана вкладка каналов из поиска
+                    // list.append(.channels)
                     list.append(.apps)
                 }
                 
@@ -2101,8 +2102,9 @@ private class SearchContainer : Control {
                         items.append(.init(title: strings().chatListDownloadsTag, index: index, uniqueId: -3, selected: state.selectedTag == .downloads, insets: insets, icon: nil, theme: presentation, equatable: UIEquatable(state)))
                         index += 1
                     }
-                    items.append(.init(title: strings().chatListChannelsTag, index: index, uniqueId: -2, selected: state.selectedTag == .channels, insets: insets, icon: nil, theme: presentation, equatable: UIEquatable(state)))
-                    index += 1
+                    // Закомментировано: убрана вкладка каналов из интерфейса поиска
+                    // items.append(.init(title: strings().chatListChannelsTag, index: index, uniqueId: -2, selected: state.selectedTag == .channels, insets: insets, icon: nil, theme: presentation, equatable: UIEquatable(state)))
+                    // index += 1
                     items.append(.init(title: strings().chatListAppsTag, index: index, uniqueId: -1, selected: state.selectedTag == .apps, insets: insets, icon: nil, theme: presentation, equatable: UIEquatable(state)))
                     index += 1
                 }
