@@ -29,7 +29,12 @@ LIBOPUS_PATH="${BUILD_DIR}../../libopus/build/libopus"
 LIBVPX_PATH="${BUILD_DIR}../../libvpx/build/libvpx"
 LIBDAV1D_PATH="${BUILD_DIR}../../dav1d/build/dav1d"
 
-FF_VERSION="7.1"
+# Auto-detect FFmpeg version (look for ffmpeg-* directories)
+FF_VERSION=$(ls -1 "$SOURCE_DIR" | grep -E "^ffmpeg-[0-9]" | sort -V | tail -1 | sed 's/^ffmpeg-//')
+if [ -z "$FF_VERSION" ]; then
+    # Fallback to hardcoded version if auto-detection fails
+    FF_VERSION="7.1"
+fi
 SOURCE="$SOURCE_DIR/ffmpeg-$FF_VERSION"
 
 GAS_PREPROCESSOR_PATH="$SOURCE_DIR/gas-preprocessor.pl"

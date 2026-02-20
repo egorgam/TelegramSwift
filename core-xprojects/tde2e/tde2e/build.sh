@@ -13,6 +13,26 @@ if [ -z "$SOURCE_DIR" ] || [ -z "$BUILD_DIR" ] || [ -z "$OPENSSL_DIR" ]; then
     exit 1
 fi
 
+# Check if td submodule is initialized (has CMakeLists.txt)
+if [ ! -f "$SOURCE_DIR/CMakeLists.txt" ]; then
+    echo "ERROR: CMakeLists.txt not found in $SOURCE_DIR"
+    echo "Attempting to initialize td submodule..."
+    # Extract path to telegram-ios from SOURCE_DIR
+    # SOURCE_DIR is typically: .../submodules/telegram-ios/third-party/td/td
+    # Go up 3 levels: td -> third-party -> telegram-ios
+    TELEGRAM_IOS_DIR="$(cd "$(dirname "$(dirname "$(dirname "$SOURCE_DIR")")")" && pwd)"
+    if [ -f "$TELEGRAM_IOS_DIR/.gitmodules" ] || [ -d "$TELEGRAM_IOS_DIR/.git" ] || [ -f "$TELEGRAM_IOS_DIR/.git" ]; then
+        echo "Initializing td submodule in $TELEGRAM_IOS_DIR"
+        (cd "$TELEGRAM_IOS_DIR" && git submodule update --init --force third-party/td/td)
+    else
+        echo "WARNING: Could not find telegram-ios directory at $TELEGRAM_IOS_DIR"
+    fi
+    if [ ! -f "$SOURCE_DIR/CMakeLists.txt" ]; then
+        echo "ERROR: Failed to initialize td submodule. CMakeLists.txt still not found at $SOURCE_DIR"
+        exit 1
+    fi
+fi
+
 openssl_crypto_library="${OPENSSL_DIR}/lib/libcrypto.a"
 options=""
 options="$options -DOPENSSL_FOUND=1"

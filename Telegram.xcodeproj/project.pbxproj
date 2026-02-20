@@ -7692,8 +7692,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "
-";
+			shellScript = "# Fix Firebase frameworks structure for macOS (deep bundle format)\n# This script runs after all build phases but before code signing\n# Wait a bit to ensure frameworks are fully copied\nsleep 0.5\nfor fw in GoogleAppMeasurement FirebaseAnalytics GoogleAppMeasurementIdentitySupport; do\n  fw_path=\"${BUILT_PRODUCTS_DIR}/${WRAPPER_NAME}/Contents/Frameworks/${fw}.framework\"\n  if [ -d \"$fw_path\" ] && [ -f \"$fw_path/Info.plist\" ] && [ ! -d \"$fw_path/Versions\" ]; then\n    cd \"$fw_path\"\n    mkdir -p Versions/A/Resources\n    bin_name=$(find . -maxdepth 1 -type f -perm +111 ! -name \".*\" | head -1 | xargs basename)\n    [ -z \"$bin_name\" ] && bin_name=\"$fw\"\n    [ -f \"$bin_name\" ] && [ ! -L \"$bin_name\" ] && mv \"$bin_name\" Versions/A/ 2>/dev/null || true\n    [ -f Info.plist ] && [ ! -L Info.plist ] && mv Info.plist Versions/A/Resources/ 2>/dev/null || true\n    [ -d \"_CodeSignature\" ] && mv \"_CodeSignature\" Versions/A/ 2>/dev/null || true\n    for item in *; do\n      [ \"$item\" = \"Versions\" ] && continue\n      [ -L \"$item\" ] && continue\n      [ -d \"$item\" ] && mv \"$item\" Versions/A/ 2>/dev/null || true\n      [ -f \"$item\" ] && mv \"$item\" Versions/A/ 2>/dev/null || true\n    done\n    ln -sf \"Versions/A/$bin_name\" \"$bin_name\" 2>/dev/null || true\n    ln -sf \"Versions/Current/Resources/Info.plist\" Info.plist 2>/dev/null || true\n    ln -sf \"A\" Versions/Current 2>/dev/null || true\n  fi\ndone\n";
 		};
 		C2D85FD51F25FE5400EDEA15 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -8810,7 +8809,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_TESTABILITY = YES;
@@ -8870,7 +8869,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -8963,7 +8962,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 245482;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -9006,7 +9005,6 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-Wl,-ld_classic",
-					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/macosx/libswiftAppKit.dylib",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.keepcoder.Telegram;
@@ -9034,7 +9032,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 245682;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = c17;
@@ -9060,7 +9058,7 @@
 				MARKETING_VERSION = 11.14.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "";
-				OTHER_LDFLAGS = "$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/macosx/libswiftAppKit.dylib";
+				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.keepcoder.Telegram.TelegramShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -9086,7 +9084,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 245682;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				GCC_C_LANGUAGE_STANDARD = c17;
@@ -9112,7 +9110,7 @@
 				MARKETING_VERSION = 11.14.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CODE_SIGN_FLAGS = "";
-				OTHER_LDFLAGS = "$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/macosx/libswiftAppKit.dylib";
+				OTHER_LDFLAGS = "";
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				"OTHER_SWIFT_FLAGS[arch=*]" = "";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.keepcoder.Telegram.TelegramShare;
@@ -9194,7 +9192,7 @@
 				CURRENT_PROJECT_VERSION = 245482;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = 6N38VWS5BX;
+				DEVELOPMENT_TEAM = 9JLFAPH7R7;
 				ENABLE_BITCODE = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -9237,7 +9235,6 @@
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-Wl,-ld_classic",
-					"$(TOOLCHAIN_DIR)/usr/lib/swift-5.0/macosx/libswiftAppKit.dylib",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.keepcoder.Telegram;
@@ -9251,6 +9248,7 @@
 				SWIFT_OPTIMIZE_OBJECT_LIFETIME = YES;
 				SWIFT_REFLECTION_METADATA_LEVEL = none;
 				SWIFT_VERSION = 5.0;
+				VALIDATE_EMBEDDED_BINARY = NO;
 			};
 			name = Debug;
 		};

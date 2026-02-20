@@ -14,11 +14,44 @@ OPENH264_DIR="$7"
 
 BUILD_DIR="${PROJECT_DIR}/build/"
 
+# Check if source directory exists and has CMakeLists.txt
+if [ ! -f "$SOURCE_DIR/CMakeLists.txt" ]; then
+    echo "ERROR: CMakeLists.txt not found in $SOURCE_DIR"
+    echo "Attempting to initialize tg_owt submodule..."
+    TG_OWT_PARENT="$(dirname "$SOURCE_DIR")/../.."
+    (cd "$TG_OWT_PARENT" && git submodule update --init --force submodules/tg_owt)
+    if [ ! -f "$SOURCE_DIR/CMakeLists.txt" ]; then
+        echo "ERROR: Failed to initialize tg_owt submodule. CMakeLists.txt still not found."
+        exit 1
+    fi
+fi
+
+# Initialize tg_owt submodules recursively (crc32c, abseil-cpp, etc.)
+# Check if .gitmodules exists to determine if this is a git repo with submodules
+if [ -f "$SOURCE_DIR/.gitmodules" ]; then
+    echo "Initializing tg_owt submodules..."
+    (cd "$SOURCE_DIR" && git submodule update --init --recursive 2>&1 | head -20)
+fi
+
 rm -rf $BUILD_DIR || true
 mkdir -p $BUILD_DIR || true
 
+# Copy source to build directory (copy contents, not the directory itself)
+if [ -d "$SOURCE_DIR" ]; then
+    cp -R "$SOURCE_DIR"/* "$BUILD_DIR"/ 2>/dev/null || cp -R "$SOURCE_DIR"/. "$BUILD_DIR"/ 2>/dev/null || {
+        echo "ERROR: Failed to copy source from $SOURCE_DIR to $BUILD_DIR"
+        exit 1
+    }
+else
+    echo "ERROR: Source directory $SOURCE_DIR does not exist"
+    exit 1
+fi
 
-cp -R $SOURCE_DIR $BUILD_DIR
+# Verify CMakeLists.txt exists in build directory
+if [ ! -f "$BUILD_DIR/CMakeLists.txt" ]; then
+    echo "ERROR: CMakeLists.txt not found in $BUILD_DIR after copying"
+    exit 1
+fi
 
 
 

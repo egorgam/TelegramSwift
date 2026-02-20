@@ -48,8 +48,8 @@ internal func evaluateApiData() -> String? {
         }
     }
     var digest = [UInt8](repeating: 0, count:Int(CC_SHA1_DIGEST_LENGTH))
-    certsData.withUnsafeBytes {
-        _ = CC_SHA1($0, CC_LONG(certsData.count), &digest)
+    certsData.withUnsafeBytes { bytes in
+        _ = CC_SHA1(bytes.baseAddress, CC_LONG(certsData.count), &digest)
     }
     let hexBytes = digest.map { String(format: "%02hhx", $0) }
     return hexBytes.joined()

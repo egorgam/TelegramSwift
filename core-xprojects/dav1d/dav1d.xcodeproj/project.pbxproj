@@ -157,7 +157,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif [ ! -d \"$PROJECT_DIR/build\" ]; then\n  sh $PROJECT_DIR/dav1d/build.sh $PROJECT_DIR/../../submodules/telegram-ios/third-party/dav1d/dav1d $PROJECT_DIR/build\nfi\n";
+			shellScript = "# Ensure dav1d submodule is initialized (source has meson.build)\nSOURCE_DIR=\"$PROJECT_DIR/../../submodules/telegram-ios/third-party/dav1d/dav1d\"\nif [ ! -f \"$SOURCE_DIR/meson.build\" ]; then\n  echo \"Initializing dav1d submodule...\"\n  (cd \"$PROJECT_DIR/../../submodules/telegram-ios\" && git submodule update --init --force third-party/dav1d/dav1d)\nfi\nif [ ! -f \"$SOURCE_DIR/meson.build\" ]; then\n  echo \"ERROR: dav1d submodule initialization failed. meson.build not found at $SOURCE_DIR\"\n  exit 1\nfi\nif [ ! -d \"$PROJECT_DIR/build\" ]; then\n  sh \"$PROJECT_DIR/dav1d/build.sh\" \"$SOURCE_DIR\" \"$PROJECT_DIR/build\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
