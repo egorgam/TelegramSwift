@@ -30,10 +30,11 @@ import TelegramMedia
 import RLottie
 import KeyboardKey
 
-#if BETA || DEBUG
-import Firebase
-import FirebaseCrashlytics
-#endif
+// Commented out: Firebase disabled for local builds
+// #if BETA || DEBUG
+// import Firebase
+// import FirebaseCrashlytics
+// #endif
 
 
 //
@@ -460,11 +461,12 @@ class AppDelegate: NSResponder, NSApplicationDelegate, NSUserNotificationCenterD
         mw = window
         
         
-        #if BETA || DEBUG
-        FirebaseApp.configure()
-        Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
-        Crashlytics.crashlytics().sendUnsentReports()
-        #endif
+        // Commented out: Firebase disabled for local builds
+        // #if BETA || DEBUG
+        // FirebaseApp.configure()
+        // Crashlytics.crashlytics().setCrashlyticsCollectionEnabled(true)
+        // Crashlytics.crashlytics().sendUnsentReports()
+        // #endif
         
         
         
